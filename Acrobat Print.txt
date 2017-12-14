@@ -1,0 +1,88 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+#SingleInstance force ;running program will overwrite old versions without pop up
+#If WinActive("ahk_class AcrobatSDIWindow")
+
+;AHK Program
+;Created by: Matthew Avery Braun Soule
+
+
+;CTRL Escape error script
+;Anything goes wrong, press ALT escape to stop the script
+
+ALT & Escape::
+BlockInput, MouseMoveOff
+MsgBox, Exiting AHK Script
+ExitApp
+Return
+
+
+;ALT + P Printing Script
+;Print and close an Adobe Acrobat tab one at a time while still being able to visually inspect each document before it is sent.
+ALT & P:: 	
+
+	;Declarations
+	StartTime :=
+	ElapsedTime := 
+	RepositoryPath :=
+
+
+;Main
+	
+	openConfig(StartTime)
+	
+	print()
+	
+	closeConfig(StartTime)
+	
+
+;Functions
+
+		openConfig(ByRef StartTime)
+	{
+		;Measure execution time
+		StartTime := A_TickCount
+		
+		SetTitleMatchMode, 2 ;matching configuration for whole script
+	}
+	
+	print()
+	{
+		SendInput, {Ctrl down}p{Ctrl up}
+		WinWaitActive, Print
+		SendInput {Enter}
+		WinWaitNotActive, Print
+		Sleep, 2000
+		SendInput, {LCtrl down}w{LCtrl up}
+	}
+	
+	closeConfig(ByRef StartTime)
+	{
+		;Measure execution time
+		ElapsedTime := (A_TickCount - StartTime)/1000
+		Sleep, 10
+		;MsgBox,  Files successfully opened after %ElapsedTime% seconds. ;Remove ";" to view message box
+		return
+	}
+	
+#If WinActive
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
